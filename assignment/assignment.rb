@@ -33,12 +33,14 @@ class Assignment
       # accept offset and limit input parameters
       # use the User Model class to find all Users, ordered by `updated_at` ascending, with specified row offset and row limit
       # return a collection of User instances that represent the specified rows
+     User.all.order(updated_at: :asc).offset(offset).limit(limit).to_a 
   end
 
   def find_alllists(offset, limit)
       # accept offset and limit input parameters
       # use the TodoList Model class to find all TodoLists, ordered by `list_due_date` descending, with specified row offset and row limit
       # return a collection of TodoList instances that represent the specified rows
+      TodoList.all.order(list_due_date: :desc).offset(offset).limit(limit).to_a
   end
 
   #
@@ -48,7 +50,8 @@ class Assignment
       # accept a username input parameter
       # use the User Model class to find all Users with the supplied username. 
       # NOTE:  Username is not unique in the Users table, thus you can have many users with the same username.
-      # return a collection of User instances that match the provided username  
+      # return a collection of User instances that match the provided username
+      User.where(username: username).to_a  
   end 
 
   def find_todolist_byname(name)
@@ -56,6 +59,7 @@ class Assignment
       # use the TodoList Model class to find all TodoLists with the supplied list_name. 
       # NOTE: List name is not required to be unique, thus you can have many lists with the same list name.
       # return a collection of TodoList instances that match the provided name
+      TodoList.where(list_name: name).to_a
   end     
 
   #
@@ -65,12 +69,14 @@ class Assignment
       # accept an id input parameter
       # use the User Model class to get the User associated with the `id` primary key
       # return the User instance that matches the provided id
+      User.find_by(id: id)
   end
 
   def get_todolist_byid(id)
       # accept an id input parameter
       # use the TodoList Model class to get the TodoList associated with the `id` primary key
       # return the TodoList instance that matches the provided id
+      TodoList.find_by(id: id)
   end
 
   #
@@ -80,12 +86,18 @@ class Assignment
       # accept an id and password_digest input parameters
       # use the User Model class to update the `password_digest` for the User associated with the id primary key
       # (no return is required)
+      u1 = User.find(id)
+      u1.password_digest = password_digest
+      u1.save
   end
 
   def update_listname(id, name)
       # accept an id and name input parameters
       # use the TodoList Model class to update the `list_name` for the TodoList associated with id primary key 
       # (no return is required)
+      list = TodoList.find(id)
+      list.list_name = name
+      list.save
   end 
 
   #
@@ -95,11 +107,13 @@ class Assignment
       # accept an id input parameter
       # use the User Model class to remove the User associated with the `id` primary key from the database
       # (no return is required)
+      User.delete(id)
   end 
 
   def delete_todolist(id)
       # accept an id input parameter
       # use the TodoList Model class to remove the TodoList associated with the `id` primary key.
       # (no return is required)
+      TodoList.delete(id)
   end
 end
